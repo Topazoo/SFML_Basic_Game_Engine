@@ -14,6 +14,7 @@ private:
 
 	bool IsExiting();
 	void GameLoop();
+	void ShowSplashScreen();
 
 	enum GameState {
 		Uninitialized, ShowingSplash, Paused,

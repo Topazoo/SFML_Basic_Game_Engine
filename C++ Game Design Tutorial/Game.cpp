@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Utilities.h"
+#include "SplashScreen.h"
 
 Game::Game()
 {
@@ -11,7 +12,8 @@ Game::Game()
 
 	/* Instantiate and set the game state */
 	_gameState = new Game::GameState;
-	*_gameState = Game::Playing;
+	//*_gameState = Game::Playing;
+	*_gameState = Game::ShowingSplash;
 
 	/* Loop running game until exit */
 	while (!IsExiting())
@@ -52,6 +54,12 @@ void Game::GameLoop()
 		/* Determine logic based on game state */
 		switch (*_gameState)
 		{
+			case Game::ShowingSplash:
+			{
+				ShowSplashScreen();
+				break;
+			}
+
 			case Game::Playing: 
 			{
 				_mainWindow->clear(sf::Color(255, 0, 0));
@@ -67,4 +75,11 @@ void Game::GameLoop()
 			}
 		}
 	}
+}
+
+void Game::ShowSplashScreen()
+{
+	SplashScreen splashScreen;
+	splashScreen.Show(_mainWindow);
+	//*_gameState = Game::ShowingMenu;
 }
