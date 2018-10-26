@@ -80,6 +80,9 @@ void Game::GameLoop()
 void Game::ShowSplashScreen()
 {
 	SplashScreen splashScreen;
-	splashScreen.Show(_mainWindow);
-	//*_gameState = Game::ShowingMenu;
+	if (splashScreen.Show(_mainWindow))
+		*_gameState = Game::Playing; //Should be menu!
+	else
+		*_gameState = Game::Exiting;
+
 }

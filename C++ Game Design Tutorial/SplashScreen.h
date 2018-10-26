@@ -5,6 +5,6 @@ class SplashScreen
 
 public:
 
-	void Show(sf::RenderWindow* window);
+	bool Show(sf::RenderWindow* window);
 
 };
