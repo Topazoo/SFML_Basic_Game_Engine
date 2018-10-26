@@ -1,6 +1,4 @@
 #pragma once
-#include "SFML/Window.hpp"
-#include "SFML/Graphics.hpp"
 
 class Game
 {
@@ -15,6 +13,7 @@ private:
 	bool IsExiting();
 	void GameLoop();
 	void ShowSplashScreen();
+	void ShowMenu();
 
 	enum GameState {
 		Uninitialized, ShowingSplash, Paused,

@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Utilities.h"
 #include "SplashScreen.h"
+#include "MainMenu.h"
 
 Game::Game()
 {
@@ -12,7 +13,6 @@ Game::Game()
 
 	/* Instantiate and set the game state */
 	_gameState = new Game::GameState;
-	//*_gameState = Game::Playing;
 	*_gameState = Game::ShowingSplash;
 
 	/* Loop running game until exit */
@@ -46,43 +46,82 @@ void Game::GameLoop()
 {
 	/* Main game loop */
 
-	sf::Event currentEvent;
-
-	/* Poll to check for window closing */
-	while (_mainWindow->pollEvent(currentEvent))
+	/* Determine logic based on game state */
+	switch (*_gameState)
 	{
-		/* Determine logic based on game state */
-		switch (*_gameState)
+		case Game::ShowingSplash:
 		{
-			case Game::ShowingSplash:
-			{
-				ShowSplashScreen();
-				break;
-			}
+			ShowSplashScreen();
+			break;
+		}
 
-			case Game::Playing: 
-			{
-				_mainWindow->clear(sf::Color(255, 0, 0));
+		case Game::ShowingMenu:
+		{
+			ShowMenu();
+			break;
+		}
 
-				/* Display the main window*/
-				_mainWindow->display();
+		case Game::Playing: 
+		{
+			/* Display the main window*/
+			_mainWindow->display();
+			_mainWindow->clear(sf::Color(255, 0, 0));
+
+			sf::Event currentEvent;
+
+			/* Poll to check for keyboard or exit events */
+			while (_mainWindow->pollEvent(currentEvent))
+			{
 
 				/* If window has been closed, update game state to exit*/
 				if (currentEvent.type == sf::Event::Closed)
 					*_gameState = Game::Exiting;
-				
-				break;
+
+				if (currentEvent.type == sf::Event::KeyPressed)
+				{
+					if (currentEvent.key.code == sf::Keyboard::Escape) 
+						ShowMenu();
+				}
 			}
+				
+			break;
 		}
 	}
+	
 }
 
 void Game::ShowSplashScreen()
 {
+	/* Show the splashscreen */
+
 	SplashScreen splashScreen;
+
+	/* If click or button press, continue to menu */
 	if (splashScreen.Show(_mainWindow))
-		*_gameState = Game::Playing; //Should be menu!
+		*_gameState = Game::ShowingMenu;
+
+	/* If exited on splashscreen, exit game */
 	else
 		*_gameState = Game::Exiting;
 
+}
+
+void Game::ShowMenu()
+{
+	/* Show the menu */
+	MainMenu mainMenu;
+
+	/* Get the result of a click on the menu */
+	MainMenu::MenuResult result = mainMenu.Show(_mainWindow);
+
+	/* Change game state if button was clicked */
+	switch (result)
+	{
+		case MainMenu::Exit:
+			*_gameState = Game::Exiting;
+			break;
+		case MainMenu::Play:
+			*_gameState = Game::Playing;
+			break;
+	}
 }
