@@ -1,9 +1,38 @@
 #include "MainMenu.h"
 
-
-MainMenu::MenuResult MainMenu::Show(sf::RenderWindow* window)
+MenuButton::MenuButton(int top, int height, int left, int width,
+	std::string actionName, int action)
 {
+	/* Create a button */
 
+	rect.top = top;
+	rect.height = height;
+	rect.left = left;
+	rect.width = width;
+
+	this->actionName = actionName;
+	this->action = action;
+}
+
+void Menu::AddButton(int top, int height, int left, int width,
+	std::string actionName)
+{
+	/* Add a button to the menu */
+
+	/* Create an incremental button number */
+	/* Reserve 0 for doing nothing */
+	int buttonNum = static_cast<int>(_menuButtons.size()) + 1;
+
+	/* Create the button */
+	MenuButton* newButton = new MenuButton(top, height, left, width,
+		actionName, buttonNum);
+
+	/* Store in hash table of buttons based on bottom margin */
+	_menuButtons[newButton->button_getBottom()] = newButton;
+}
+
+int Menu::Show(sf::RenderWindow* window)
+{
 	/* Display the main menu and responds to button presses */
 
 	/* Load menu image (with buttons drawn in */
@@ -12,27 +41,8 @@ MainMenu::MenuResult MainMenu::Show(sf::RenderWindow* window)
 	sf::Sprite sprite(menuImage);
 
 	/* Create buttons */
-	// TODO - Build wrapper class to clean up instantiating buttons
-
-	/* Play button coordinates and action */
-	MenuItem playButton;
-	playButton.rect.top = 145;
-	playButton.rect.height = 235;
-	playButton.rect.left = 0;
-	playButton.rect.width = 1023;
-	playButton.action = Play;
-
-	/* Exit button coordinates and action */
-	MenuItem exitButton;
-	exitButton.rect.top = 383;
-	exitButton.rect.left = 0;
-	exitButton.rect.width = 1023;
-	exitButton.rect.height = 177;
-	exitButton.action = Exit;
-
-	/* Store buttons in list */
-	_menuItems.push_back(playButton);
-	_menuItems.push_back(exitButton);
+	AddButton(145, 235, 0, 1023, "Play"); // 1
+	AddButton(383, 177, 0, 1023, "Exit"); // 2
 
 	window->draw(sprite);
 	window->display();
@@ -40,32 +50,36 @@ MainMenu::MenuResult MainMenu::Show(sf::RenderWindow* window)
 	return GetMenuResponse(window);
 }
 
-MainMenu::MenuResult MainMenu::HandleClick(int x, int y)
+int Menu::HandleClick(int x, int y)
 {
-	std::list<MenuItem>::iterator it;
+	/* Determine menu button pressed by click coordinates */
 
-	/* Look through all stored buttons */
-	//TODO - Separate-chaining hash table instead of list
-	for (it = _menuItems.begin(); it != _menuItems.end(); it++)
+	std::map<int, MenuButton*>::iterator it;
+
+	/* Search button hash table based on closest found button */
+	it = _menuButtons.lower_bound(y);
+
+	/* Validate that button is correct */
+	if (it != _menuButtons.end())
 	{
-		/* If a button is found within the clicked coordinates */
-		sf::Rect<int> menuItemRect = (*it).rect;
-		if (menuItemRect.top + menuItemRect.height > y
-			&& menuItemRect.top < y
-			&& menuItemRect.left < x
-			&& menuItemRect.left + menuItemRect.width > x)
+		if (it->second->button_getTop() < y &&
+			it->second->button_getBottom() > y &&
+			it->second->button_getLeft() < x &&
+			it->second->button_getRight() > x)
 		{
-			/* Return the action of that button */
-			return (*it).action;
+			return it->second->button_getAction();
 		}
 	}
 
-	/* If no button within the coordinates, do nothing */
-	return Nothing;
+	/* Return 0 if not found or not correct */
+
+	return 0;	
 }
 
-MainMenu::MenuResult MainMenu::GetMenuResponse(sf::RenderWindow* window)
+int Menu::GetMenuResponse(sf::RenderWindow* window)
 {
+	/* Respond to user actions on the menu */
+
 	sf::Event menuEvent;
 	
 	/* Infinite loop on menu until user action */
@@ -76,15 +90,17 @@ MainMenu::MenuResult MainMenu::GetMenuResponse(sf::RenderWindow* window)
 		{
 			/* If clicked, check coordinates to see if there's a button there */
 			if (menuEvent.type == sf::Event::MouseButtonPressed)
-			{
 				return HandleClick(menuEvent.mouseButton.x, menuEvent.mouseButton.y);
-			}
 
 			/* If closed, exit game */
 			if (menuEvent.type == sf::Event::Closed)
-			{
-				return Exit;
-			}
+				return -1;
+			
 		}
 	}
+}
+
+Menu::~Menu()
+{
+	_menuButtons.clear();
 }

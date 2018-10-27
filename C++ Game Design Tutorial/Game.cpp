@@ -109,19 +109,22 @@ void Game::ShowSplashScreen()
 void Game::ShowMenu()
 {
 	/* Show the menu */
-	MainMenu mainMenu;
+	Menu mainMenu;
 
 	/* Get the result of a click on the menu */
-	MainMenu::MenuResult result = mainMenu.Show(_mainWindow);
+	int result = mainMenu.Show(_mainWindow);
 
 	/* Change game state if button was clicked */
 	switch (result)
 	{
-		case MainMenu::Exit:
+		case -1:
 			*_gameState = Game::Exiting;
 			break;
-		case MainMenu::Play:
+		case 1:
 			*_gameState = Game::Playing;
+			break;
+		case 2:
+			*_gameState = Game::Exiting;
 			break;
 	}
 }
