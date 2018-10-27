@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "Utilities.h"
 #include "SplashScreen.h"
-#include "MainMenu.h"
+#include "Menu.h"
 
 Game::Game()
 {
@@ -79,8 +79,11 @@ void Game::GameLoop()
 
 				if (currentEvent.type == sf::Event::KeyPressed)
 				{
-					if (currentEvent.key.code == sf::Keyboard::Escape) 
+					if (currentEvent.key.code == sf::Keyboard::Escape)
+					{
+						*_gameState = Game::ShowingMenu;
 						ShowMenu();
+					}
 				}
 			}
 				

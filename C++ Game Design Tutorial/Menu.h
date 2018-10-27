@@ -32,5 +32,5 @@ public:
 private:
 	int HandleClick(int x, int y);
 	int GetMenuResponse(sf::RenderWindow* window);
-	std::map<int, MenuButton*> _menuButtons;
+	std::map<int, std::map<int, MenuButton*> > _menuButtons;
 };

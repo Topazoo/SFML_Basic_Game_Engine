@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+#include "Menu.h"
 
 MenuButton::MenuButton(int top, int height, int left, int width,
 	std::string actionName, int action)
@@ -27,8 +27,8 @@ void Menu::AddButton(int top, int height, int left, int width,
 	MenuButton* newButton = new MenuButton(top, height, left, width,
 		actionName, buttonNum);
 
-	/* Store in hash table of buttons based on bottom margin */
-	_menuButtons[newButton->button_getBottom()] = newButton;
+	/* Store in hash table of hash tables based on bottom and right margins */
+	_menuButtons[newButton->button_getBottom()][newButton->button_getRight()] = newButton;
 }
 
 int Menu::Show(sf::RenderWindow* window)
@@ -54,25 +54,32 @@ int Menu::HandleClick(int x, int y)
 {
 	/* Determine menu button pressed by click coordinates */
 
-	std::map<int, MenuButton*>::iterator it;
+	std::map<int, std::map<int, MenuButton*> >::iterator col;
+	std::map<int, MenuButton*>::iterator row;
 
-	/* Search button hash table based on closest found button */
-	it = _menuButtons.lower_bound(y);
+	/* Search column hash table for column of buttons closest to click */
+	col = _menuButtons.lower_bound(y);
+
+	/* If no column of buttons found, do nothing */
+	if (col == _menuButtons.end())
+		return 0;
+
+	/* Otherwise search for closest button in column */
+	row = col->second.lower_bound(x);
 
 	/* Validate that button is correct */
-	if (it != _menuButtons.end())
+	if (row != col->second.end())
 	{
-		if (it->second->button_getTop() < y &&
-			it->second->button_getBottom() > y &&
-			it->second->button_getLeft() < x &&
-			it->second->button_getRight() > x)
+		if (row->second->button_getTop() < y &&
+			row->second->button_getBottom() > y &&
+			row->second->button_getLeft() < x &&
+			row->second->button_getRight() > x)
 		{
-			return it->second->button_getAction();
+			return row->second->button_getAction();
 		}
 	}
 
 	/* Return 0 if not found or not correct */
-
 	return 0;	
 }
 
