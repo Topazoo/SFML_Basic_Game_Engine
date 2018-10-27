@@ -9,7 +9,7 @@ The tutorial itself appears outdated as SFML seems to be much more object-orient
 was made. Thus, this project contains different data structures and design patterns than the tutorial itself.
 
 ## Minor Differences From Tutorial
-- SFML object methods have different names and methods than the tutorial (e.g. the Rect class has no longer has a "bottom" or "right" attribute.
+- SFML object methods have different names and methods than the tutorial (e.g. the Rect class has no longer has a "bottom" or "right" attribute).
 - Some SFML objects in the tutorial no longer exist and their functionality lies in other objects (e.g. the Image class has been replaced by the Texture class).
 - Some important game state changes the tutorial omitted (e.g. game closed on splashscreen and changing to menu state on escape key press).
 

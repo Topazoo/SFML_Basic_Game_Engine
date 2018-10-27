@@ -2,6 +2,8 @@
 #include "Utilities.h"
 #include "SplashScreen.h"
 #include "Menu.h"
+#include "PlayerPaddle.h"
+#include "GameObjectManager.h"
 
 Game::Game()
 {
@@ -11,9 +13,15 @@ Game::Game()
 	_mainWindow = new sf::RenderWindow;
 	_mainWindow->create(sf::VideoMode(1024, 768, 32), "Pang!");
 
+	_gameObjectManager = new GameObjectManager();
+
 	/* Instantiate and set the game state */
 	_gameState = new Game::GameState;
 	*_gameState = Game::ShowingSplash;
+	PlayerPaddle *player1 = new PlayerPaddle("Paddle1", "images/sprites/paddle.png");
+	player1->Load();
+	player1->SetPosition((1024 / 2) - 45, 700);
+	 _gameObjectManager->Add(player1);
 
 	/* Loop running game until exit */
 	while (!IsExiting())
@@ -64,8 +72,9 @@ void Game::GameLoop()
 		case Game::Playing: 
 		{
 			/* Display the main window*/
+			_mainWindow->clear(sf::Color(0, 0, 0));
+			_gameObjectManager->DrawAll(_mainWindow);
 			_mainWindow->display();
-			_mainWindow->clear(sf::Color(255, 0, 0));
 
 			sf::Event currentEvent;
 

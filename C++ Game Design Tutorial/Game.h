@@ -1,4 +1,6 @@
 #pragma once
+#include "PlayerPaddle.h"
+#include "GameObjectManager.h"
 
 class Game
 {
@@ -21,7 +23,9 @@ private:
 	};
 
 	GameState* _gameState;
+	
 	sf::RenderWindow* _mainWindow;
+	GameObjectManager* _gameObjectManager;
 	
 	/* Private constructor for Singleton */
 	Game(); 
