@@ -6,12 +6,12 @@ public:
 	MenuButton(int top, int right, int bottom, int left,
 		std::string actionName, int action);
 
-	int button_getTop() { return rect.top; };
-	int button_getBottom() { return rect.top + rect.height; };
-	int button_getLeft() { return rect.left; };
-	int button_getRight() { return rect.left + rect.width; };
-	int button_getAction() { return action; };
-	std::string button_getActionName() { return actionName; };
+	int GetTop() { return rect.top; };
+	int GetBottom() { return rect.top + rect.height; };
+	int GetLeft() { return rect.left; };
+	int GetRight() { return rect.left + rect.width; };
+	int GetAction() { return action; };
+	std::string GetActionName() { return actionName; };
 
 private:
 	sf::Rect<int> rect;

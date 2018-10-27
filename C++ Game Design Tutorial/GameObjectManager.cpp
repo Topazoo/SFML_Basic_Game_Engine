@@ -7,6 +7,7 @@ GameObjectManager::GameObjectManager()
 
 GameObjectManager::~GameObjectManager()
 {
+	/* Deallocate all stored objects using functor */
 	std::for_each(_gameObjects.begin(), _gameObjects.end(), GameObjectDeallocator());
 }
 
@@ -15,7 +16,7 @@ void GameObjectManager::Add(VisibleGameObject* gameObject)
 {
 	/* Add an object to the gameobject manager */
 
-	_gameObjects[gameObject->getName()] = gameObject;
+	_gameObjects[gameObject->GetName()] = gameObject;
 }
 
 void GameObjectManager::Remove(std::string name)
@@ -56,10 +57,18 @@ void GameObjectManager::DrawAll(sf::RenderWindow* renderWindow)
 {
 	/* Draw all stored objects to screen */
 
-	std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
-	while (itr != _gameObjects.end())
+	for(std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
+		itr != _gameObjects.end(); itr++)
 	{
 		itr->second->Draw(renderWindow);
-		itr++;
 	}
+}
+
+void GameObjectManager::Insert(VisibleGameObject* obj, float xPos, float yPos)
+{
+	/* Load object, set position and add to game manager */
+
+	obj->Load(xPos, yPos);
+	this->Add(obj);
+
 }

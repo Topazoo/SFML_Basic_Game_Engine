@@ -1,16 +1,18 @@
 #pragma once
+
 class VisibleGameObject
 {
 public:
 	VisibleGameObject(std::string name, std::string filename) : _isLoaded(false), _name(name), _filename(filename) {};
 	virtual ~VisibleGameObject();
 
-	virtual void Load();
-	virtual std::string getName() { return _name; };
+	virtual void Load(float xPos, float yPos);
 	virtual void Draw(sf::RenderWindow* window);
-
 	virtual void SetPosition(float x, float y);
 
+	virtual std::string GetName() { return _name; };
+
+protected:
 	std::string _name;
 	std::string _filename;
 

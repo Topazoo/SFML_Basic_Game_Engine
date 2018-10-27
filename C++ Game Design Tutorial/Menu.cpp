@@ -28,7 +28,7 @@ void Menu::AddButton(int top, int height, int left, int width,
 		actionName, buttonNum);
 
 	/* Store in hash table of hash tables based on bottom and right margins */
-	_menuButtons[newButton->button_getBottom()][newButton->button_getRight()] = newButton;
+	_menuButtons[newButton->GetBottom()][newButton->GetRight()] = newButton;
 }
 
 int Menu::Show(sf::RenderWindow* window)
@@ -70,12 +70,12 @@ int Menu::HandleClick(int x, int y)
 	/* Validate that button is correct */
 	if (row != col->second.end())
 	{
-		if (row->second->button_getTop() < y &&
-			row->second->button_getBottom() > y &&
-			row->second->button_getLeft() < x &&
-			row->second->button_getRight() > x)
+		if (row->second->GetTop() < y &&
+			row->second->GetBottom() > y &&
+			row->second->GetLeft() < x &&
+			row->second->GetRight() > x)
 		{
-			return row->second->button_getAction();
+			return row->second->GetAction();
 		}
 	}
 

@@ -13,22 +13,22 @@ Game::Game()
 	_mainWindow = new sf::RenderWindow;
 	_mainWindow->create(sf::VideoMode(1024, 768, 32), "Pang!");
 
+	/* Instantiate and create the game object manager */
 	_gameObjectManager = new GameObjectManager();
 
 	/* Instantiate and set the game state */
 	_gameState = new Game::GameState;
 	*_gameState = Game::ShowingSplash;
-	PlayerPaddle *player1 = new PlayerPaddle("Paddle1", "images/sprites/paddle.png");
-	player1->Load();
-	player1->SetPosition((1024 / 2) - 45, 700);
-	 _gameObjectManager->Add(player1);
+
+	/* Create and load initial sprites */
+	 CreateInitialSprites();
 
 	/* Loop running game until exit */
 	while (!IsExiting())
 		GameLoop();
 
 	/* Close the window */
-	this->_mainWindow->close();
+	_mainWindow->close();
 }
 
 Game& Game::Start()
@@ -139,4 +139,10 @@ void Game::ShowMenu()
 			*_gameState = Game::Exiting;
 			break;
 	}
+}
+
+void Game::CreateInitialSprites() //TODO - Load from .ini file
+{
+	PlayerPaddle *player1 = new PlayerPaddle("Paddle1", "images/sprites/paddle.png");
+	_gameObjectManager->Insert(player1, (1024 / 2) - 45, 700);
 }

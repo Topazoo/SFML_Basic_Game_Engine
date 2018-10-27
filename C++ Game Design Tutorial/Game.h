@@ -16,6 +16,8 @@ private:
 	void GameLoop();
 	void ShowSplashScreen();
 	void ShowMenu();
+	
+	void CreateInitialSprites();
 
 	enum GameState {
 		Uninitialized, ShowingSplash, Paused,
