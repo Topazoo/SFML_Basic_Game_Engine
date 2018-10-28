@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameObjectManager.h"
+#include "Game.h"
 
 GameObjectManager::~GameObjectManager()
 {
@@ -72,10 +73,12 @@ void GameObjectManager::UpdateAll()
 	}
 }
 
-void GameObjectManager::Insert(VisibleGameObject* obj, float xPos, float yPos)
+void GameObjectManager::Insert(VisibleGameObject* obj, float xOffset, float yOffset)
 {
 	/* Load object, set position and add to game manager */
 
-	obj->Load(xPos, yPos);
+	obj->Load((Game::SCREEN_WIDTH / 2) - xOffset, 
+		(Game::SCREEN_HEIGHT / 2) - yOffset);
+
 	this->Add(obj);
 }

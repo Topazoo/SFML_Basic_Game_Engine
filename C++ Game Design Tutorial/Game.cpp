@@ -3,6 +3,7 @@
 #include "SplashScreen.h"
 #include "Menu.h"
 #include "PlayerPaddle.h"
+#include "GameBall.h"
 #include "GameObjectManager.h"
 
 Game::Game()
@@ -120,7 +121,6 @@ void Game::ShowSplashScreen()
 	/* If exited on splashscreen, exit game */
 	else
 		*_gameState = Game::Exiting;
-
 }
 
 void Game::ShowMenu()
@@ -149,8 +149,8 @@ void Game::ShowMenu()
 void Game::CreateInitialSprites() //TODO - Load from .ini file
 {
 	PlayerPaddle *player1 = new PlayerPaddle("Paddle1", "images/sprites/paddle.png");
-	_gameObjectManager->Insert(player1, (SCREEN_WIDTH / 2) - 45, 700);
+	_gameObjectManager->Insert(player1, -45, -316);
 
-	//PlayerPaddle *player2 = new PlayerPaddle("Paddle2", "images/sprites/paddle.png");
-	//_gameObjectManager->Insert(player2, (1024 / 2) - 45, 0);
+	GameBall* ball = new GameBall("Ball", "images/sprites/ball.png");
+	_gameObjectManager->Insert(ball, 0, -15);
 }
