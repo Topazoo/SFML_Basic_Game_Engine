@@ -15,6 +15,7 @@ void VisibleGameObject::Load(float xPos, float yPos)
 	{
 		_sprite->setTexture(*_image);
 		_sprite->setPosition(xPos, yPos);
+		_sprite->setOrigin(_sprite->getLocalBounds().width / 2, _sprite->getLocalBounds().height / 2);
 		_isLoaded = true;
 	}
 }

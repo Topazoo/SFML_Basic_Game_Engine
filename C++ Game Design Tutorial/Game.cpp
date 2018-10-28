@@ -11,7 +11,7 @@ Game::Game()
 
 	/* Instantiate and create the game window */
 	_mainWindow = new sf::RenderWindow;
-	_mainWindow->create(sf::VideoMode(1024, 768, 32), "Pang!");
+	_mainWindow->create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Pang!");
 
 	/* Instantiate and create the game object manager */
 	_gameObjectManager = new GameObjectManager();
@@ -77,6 +77,7 @@ void Game::GameLoop()
 		{
 			/* Display the main window*/
 			_mainWindow->clear(sf::Color(0, 0, 0));
+			_gameObjectManager->UpdateAll();
 			_gameObjectManager->DrawAll(_mainWindow);
 			_mainWindow->display();
 
@@ -148,7 +149,7 @@ void Game::ShowMenu()
 void Game::CreateInitialSprites() //TODO - Load from .ini file
 {
 	PlayerPaddle *player1 = new PlayerPaddle("Paddle1", "images/sprites/paddle.png");
-	_gameObjectManager->Insert(player1, (1024 / 2) - 45, 700);
+	_gameObjectManager->Insert(player1, (SCREEN_WIDTH / 2) - 45, 700);
 
 	//PlayerPaddle *player2 = new PlayerPaddle("Paddle2", "images/sprites/paddle.png");
 	//_gameObjectManager->Insert(player2, (1024 / 2) - 45, 0);

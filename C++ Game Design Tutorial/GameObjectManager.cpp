@@ -61,6 +61,17 @@ void GameObjectManager::DrawAll(sf::RenderWindow* renderWindow)
 	}
 }
 
+void GameObjectManager::UpdateAll()
+{
+	float timeDelta = clock.restart().asSeconds();
+	
+	for (std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects->begin();
+		itr != _gameObjects->end(); itr++)
+	{
+		itr->second->Update(timeDelta);
+	}
+}
+
 void GameObjectManager::Insert(VisibleGameObject* obj, float xPos, float yPos)
 {
 	/* Load object, set position and add to game manager */
