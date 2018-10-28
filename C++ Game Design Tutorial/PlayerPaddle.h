@@ -6,7 +6,9 @@ class PlayerPaddle :
 {
 public:
 	PlayerPaddle(std::string name, 
-		std::string filename) : VisibleGameObject(name, filename) {};
+		std::string filename) : 
+		VisibleGameObject(name, filename) {};
+
 	~PlayerPaddle();
 };
 

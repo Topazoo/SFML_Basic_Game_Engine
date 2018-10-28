@@ -1,17 +1,22 @@
 #include "Menu.h"
 
 MenuButton::MenuButton(int top, int height, int left, int width,
-	std::string actionName, int action)
+	std::string actionName, int action) : rect(new sf::Rect<int>)
 {
 	/* Create a button */
 
-	rect.top = top;
-	rect.height = height;
-	rect.left = left;
-	rect.width = width;
+	rect->top = top;
+	rect->height = height;
+	rect->left = left;
+	rect->width = width;
 
 	this->actionName = actionName;
 	this->action = action;
+}
+
+MenuButton::~MenuButton()
+{
+	delete rect;
 }
 
 void Menu::AddButton(int top, int height, int left, int width,
@@ -21,14 +26,14 @@ void Menu::AddButton(int top, int height, int left, int width,
 
 	/* Create an incremental button number */
 	/* Reserve 0 for doing nothing */
-	int buttonNum = static_cast<int>(_menuButtons.size()) + 1;
+	int buttonNum = static_cast<int>(_menuButtons->size()) + 1;
 
 	/* Create the button */
 	MenuButton* newButton = new MenuButton(top, height, left, width,
 		actionName, buttonNum);
 
 	/* Store in hash table of hash tables based on bottom and right margins */
-	_menuButtons[newButton->GetBottom()][newButton->GetRight()] = newButton;
+	(*_menuButtons)[newButton->GetBottom()][newButton->GetRight()] = newButton;
 }
 
 int Menu::Show(sf::RenderWindow* window)
@@ -58,10 +63,10 @@ int Menu::HandleClick(int x, int y)
 	std::map<int, MenuButton*>::iterator row;
 
 	/* Search column hash table for column of buttons closest to click */
-	col = _menuButtons.lower_bound(y);
+	col = _menuButtons->lower_bound(y);
 
 	/* If no column of buttons found, do nothing */
-	if (col == _menuButtons.end())
+	if (col == _menuButtons->end())
 		return 0;
 
 	/* Otherwise search for closest button in column */
@@ -101,13 +106,14 @@ int Menu::GetMenuResponse(sf::RenderWindow* window)
 
 			/* If closed, exit game */
 			if (menuEvent.type == sf::Event::Closed)
-				return -1;
-			
+				return -1;	
 		}
 	}
 }
 
 Menu::~Menu()
 {
-	_menuButtons.clear();
+	/* Deallocate all stored objects using functor */
+	std::for_each(_menuButtons->begin(), _menuButtons->end(), MenuButtonColDeallocator());
+	delete _menuButtons;
 }

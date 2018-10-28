@@ -2,13 +2,15 @@
 #include "PlayerPaddle.h"
 #include "GameObjectManager.h"
 
+class Game;
+
 class Game
 {
 
 public:
 	/* Singleton Constructor method*/
 	static Game& Start();
-	~Game() {};
+	~Game();
 
 private:
 
@@ -31,4 +33,5 @@ private:
 	
 	/* Private constructor for Singleton */
 	Game(); 
+
 };

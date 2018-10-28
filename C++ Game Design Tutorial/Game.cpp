@@ -40,6 +40,9 @@ Game& Game::Start()
 	return game;
 }
 
+Game::~Game()
+{}
+
 bool Game::IsExiting()
 {
 	/* Check game state for exit condition */
@@ -145,4 +148,7 @@ void Game::CreateInitialSprites() //TODO - Load from .ini file
 {
 	PlayerPaddle *player1 = new PlayerPaddle("Paddle1", "images/sprites/paddle.png");
 	_gameObjectManager->Insert(player1, (1024 / 2) - 45, 700);
+
+	//PlayerPaddle *player2 = new PlayerPaddle("Paddle2", "images/sprites/paddle.png");
+	//_gameObjectManager->Insert(player2, (1024 / 2) - 45, 0);
 }

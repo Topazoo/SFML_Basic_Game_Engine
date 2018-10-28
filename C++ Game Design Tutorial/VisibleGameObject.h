@@ -3,22 +3,29 @@
 class VisibleGameObject
 {
 public:
-	VisibleGameObject(std::string name, std::string filename) : _isLoaded(false), _name(name), _filename(filename) {};
+	VisibleGameObject(std::string name, std::string filename) : 
+		_isLoaded(false), _name(name), _filename(filename), 
+		_sprite(new sf::Sprite), _image(new sf::Texture) {};
+
 	virtual ~VisibleGameObject();
 
 	virtual void Load(float xPos, float yPos);
 	virtual void Draw(sf::RenderWindow* window);
-	virtual void SetPosition(float x, float y);
+	virtual void Update(float elapsedTime);
 
-	virtual std::string GetName() { return _name; };
+	virtual void SetPosition(float x, float y);
+	
+	virtual sf::Vector2f GetPosition() const;
+	virtual std::string GetName() const { return _name; };
 
 protected:
-	std::string _name;
-	std::string _filename;
+	sf::Sprite* GetSprite();
 
 private:
-	sf::Sprite  _sprite;
-	sf::Texture _image;
+	std::string _name;
+	std::string _filename;
+	sf::Sprite*  _sprite;
+	sf::Texture* _image;
 	bool _isLoaded;
 };
 
