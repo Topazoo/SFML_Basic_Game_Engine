@@ -4,7 +4,10 @@
 class GameObjectManager
 {
 public:
-	GameObjectManager();
+	GameObjectManager() :
+		_gameObjects(new std::map<std::string, 
+			VisibleGameObject*>) {};
+
 	~GameObjectManager();
 
 	void Add(VisibleGameObject* gameObject);
@@ -17,7 +20,7 @@ public:
 	void DrawAll(sf::RenderWindow* renderWindow);
 
 private:
-	std::map<std::string, VisibleGameObject*> _gameObjects;
+	std::map<std::string, VisibleGameObject*>* _gameObjects;
 
 	/* Functor to use during foreach deallocation */
 	struct GameObjectDeallocator

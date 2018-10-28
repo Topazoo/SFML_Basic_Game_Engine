@@ -2,8 +2,6 @@
 #include "PlayerPaddle.h"
 #include "GameObjectManager.h"
 
-class Game;
-
 class Game
 {
 
@@ -33,5 +31,4 @@ private:
 	
 	/* Private constructor for Singleton */
 	Game(); 
-
 };

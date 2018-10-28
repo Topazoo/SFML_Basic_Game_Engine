@@ -41,7 +41,8 @@ Game& Game::Start()
 }
 
 Game::~Game()
-{}
+{
+}
 
 bool Game::IsExiting()
 {
